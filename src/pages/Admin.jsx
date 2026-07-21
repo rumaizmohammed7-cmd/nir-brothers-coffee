@@ -23,9 +23,14 @@ const Admin = () => {
   const [whatsappNumber2, setWhatsappNumber2] = useState('');
   const [imageString, setImageString] = useState('');
   const [imagePreview, setImagePreview] = useState('');
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [passcode, setPasscode] = useState('');
+  const [authError, setAuthError] = useState('');
 
   useEffect(() => {
     document.title = "Admin Dashboard | NIR Brothers Coffee";
+    const isAuth = sessionStorage.getItem('nir_admin_authenticated') === 'true';
+    setIsAdminAuthenticated(isAuth);
     
     // Load Formspree ID
     setFormspreeId(localStorage.getItem('nir_formspree_id') || '');
@@ -72,6 +77,22 @@ const Admin = () => {
     localStorage.setItem('nir_whatsapp_number', whatsappNumber);
     localStorage.setItem('nir_whatsapp_number_2', whatsappNumber2);
     alert("Notification and Sourcing settings updated successfully!");
+  };
+
+  const handleAuthSubmit = (e) => {
+    e.preventDefault();
+    if (passcode === 'NIRCOFFEE2026') {
+      sessionStorage.setItem('nir_admin_authenticated', 'true');
+      setIsAdminAuthenticated(true);
+      setAuthError('');
+    } else {
+      setAuthError('Access Denied: Incorrect staff passcode.');
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('nir_admin_authenticated');
+    setIsAdminAuthenticated(false);
   };
 
   const handleImageUpload = (e) => {
@@ -172,6 +193,48 @@ const Admin = () => {
     window.location.reload();
   };
 
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="py-32 bg-coffee-950 min-h-screen flex items-center justify-center text-coffee-50 px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-md w-full glass-card p-8 rounded-3xl bg-white/5 border border-coffee-200/10 shadow-2xl flex flex-col gap-6 text-center"
+        >
+          <div className="w-16 h-16 rounded-full bg-coffee-900 flex items-center justify-center text-coffee-500 mx-auto text-2xl border border-coffee-700/50 shadow-inner">
+            🔒
+          </div>
+          <div>
+            <h1 className="font-heading text-xl font-bold tracking-wider text-coffee-100">Staff Portal Security</h1>
+            <p className="text-[10px] text-coffee-400 font-light mt-2 max-w-xs mx-auto leading-relaxed">
+              Access is restricted to authorized NIR Brothers roastery managers only.
+            </p>
+          </div>
+          <form onSubmit={handleAuthSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2 text-left">
+              <label className="text-[9px] font-mono uppercase tracking-wider text-coffee-300 font-bold">Roastery Passcode</label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={passcode}
+                onChange={(e) => setPasscode(e.target.value)}
+                className="bg-white/10 text-white text-xs px-4 py-3.5 rounded-xl border border-coffee-700/50 focus:outline-none focus:border-coffee-500 text-center font-mono placeholder-coffee-600"
+              />
+            </div>
+            {authError && <p className="text-[10px] text-red-400 font-mono mt-1">{authError}</p>}
+            <button
+              type="submit"
+              className="bg-coffee-500 text-coffee-950 hover:bg-coffee-100 hover:text-coffee-950 py-3.5 rounded-xl font-heading text-xs font-bold tracking-widest mt-2 transition-all active:scale-95 shadow-md"
+            >
+              UNLOCK PORTAL
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="py-24 bg-coffee-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8">
@@ -182,9 +245,17 @@ const Admin = () => {
             <span className="text-xs uppercase tracking-[0.3em] font-semibold text-coffee-500 block mb-2">Internal Sourcing Portal</span>
             <h1 className="text-3xl md:text-5xl font-heading font-bold text-coffee-900">NIR Admin Dashboard</h1>
           </div>
-          <div className="bg-coffee-800 text-coffee-50 text-xxs font-mono font-bold tracking-widest px-4 py-2.5 rounded-xl border border-coffee-700 flex items-center gap-2 shadow-sm">
-            <ShieldCheck className="w-4 h-4 text-coffee-500" />
-            <span>SECURED ADMINISTRATOR ACCESS</span>
+          <div className="flex items-center gap-3">
+            <div className="bg-coffee-800 text-coffee-50 text-xxs font-mono font-bold tracking-widest px-4 py-2.5 rounded-xl border border-coffee-700 flex items-center gap-2 shadow-sm">
+              <ShieldCheck className="w-4 h-4 text-coffee-500" />
+              <span>SECURED ACCESS</span>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="bg-red-950/20 text-red-700 hover:bg-red-600 hover:text-white text-xxs font-mono font-bold tracking-widest px-4 py-2.5 rounded-xl border border-red-500/20 shadow-sm transition-all"
+            >
+              LOG OUT
+            </button>
           </div>
         </div>
 
