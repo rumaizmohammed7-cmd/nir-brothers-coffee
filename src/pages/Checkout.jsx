@@ -57,6 +57,12 @@ const Checkout = () => {
     // Check if Formspree ID is set for real email notifications
     const formspreeId = localStorage.getItem('nir_formspree_id');
     if (formspreeId) {
+      let cleanId = formspreeId.trim();
+      if (cleanId.includes('formspree.io/f/')) {
+        cleanId = cleanId.split('formspree.io/f/')[1];
+      }
+      cleanId = cleanId.split('/')[0].trim();
+
       const emailBody = {
         orderId: orderId,
         date: newOrder.date,
@@ -70,7 +76,7 @@ const Checkout = () => {
         _subject: `New Coffee Order ${orderId} - ₹${total}`
       };
 
-      fetch(`https://formspree.io/f/${formspreeId}`, {
+      fetch(`https://formspree.io/f/${cleanId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
