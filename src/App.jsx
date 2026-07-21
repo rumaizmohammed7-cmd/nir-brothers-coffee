@@ -44,6 +44,10 @@ function App() {
   useEffect(() => {
     if (isLoading) return; // Wait until loader finishes
 
+    // Skip Lenis on touch devices or mobile screens to prevent iOS/Safari crashes
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth < 1024;
+    if (isTouchDevice) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

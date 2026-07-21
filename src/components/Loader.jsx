@@ -40,9 +40,18 @@ const Loader = ({ finishLoading }) => {
             className="w-24 h-24 stroke-coffee-50 fill-none stroke-[2]"
           >
             {/* Cup Outline */}
+            <defs>
+              <linearGradient id="cup-fill" x1="0" y1="1" x2="0" y2="0">
+                <stop offset={`${progress}%`} stopColor="#C89B5A" />
+                <stop offset={`${progress}%`} stopColor="transparent" />
+              </linearGradient>
+            </defs>
+
+            {/* Cup Outline */}
             <path
               d="M30 40 L35 70 C36 78, 44 80, 50 80 C56 80, 64 78, 65 70 L70 40 Z"
-              className="stroke-coffee-50 fill-none"
+              className="stroke-coffee-50"
+              style={{ fill: 'url(#cup-fill)' }}
             />
             {/* Handle */}
             <path
@@ -72,20 +81,6 @@ const Loader = ({ finishLoading }) => {
               className="stroke-coffee-50/60"
               animate={{ y: [0, -10, 0], opacity: [0, 1, 0] }}
               transition={{ repeat: Infinity, duration: 2.2, delay: 0.8 }}
-            />
-            
-            {/* Rising Coffee Liquid inside the cup */}
-            <clipPath id="cup-clip">
-              <path d="M30 40 L35 70 C36 78, 44 80, 50 80 C56 80, 64 78, 65 70 L70 40 Z" />
-            </clipPath>
-            <motion.rect
-              x="20"
-              y={80 - (progress * 0.4)} // rising height
-              width="60"
-              height="50"
-              fill="#C89B5A"
-              clipPath="url(#cup-clip)"
-              transition={{ ease: "easeInOut" }}
             />
           </svg>
           

@@ -8,6 +8,10 @@ const Magnetic = ({ children, range = 35 }) => {
     const el = containerRef.current;
     if (!el) return;
 
+    // Skip magnetic hover triggers on mobile/touch devices
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
+
     const handleMouseMove = (e) => {
       const rect = el.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;

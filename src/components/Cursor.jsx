@@ -4,8 +4,14 @@ import { motion } from 'framer-motion';
 const Cursor = () => {
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
   const [cursorType, setCursorType] = useState('default');
+  const [isTouch, setIsTouch] = useState(true);
 
   useEffect(() => {
+    // Check if device supports touch input or is mobile
+    const checkTouch = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    setIsTouch(checkTouch);
+    if (checkTouch) return;
+
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -33,6 +39,8 @@ const Cursor = () => {
       window.removeEventListener('mouseover', handleMouseOver);
     };
   }, []);
+
+  if (isTouch) return null;
 
   return (
     <div className="hidden md:block">
