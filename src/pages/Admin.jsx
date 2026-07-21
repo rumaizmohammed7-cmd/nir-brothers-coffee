@@ -20,6 +20,7 @@ const Admin = () => {
   });
   const [formspreeId, setFormspreeId] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [whatsappNumber2, setWhatsappNumber2] = useState('');
   const [imageString, setImageString] = useState('');
   const [imagePreview, setImagePreview] = useState('');
 
@@ -30,6 +31,7 @@ const Admin = () => {
     setFormspreeId(localStorage.getItem('nir_formspree_id') || '');
     // Load WhatsApp Number
     setWhatsappNumber(localStorage.getItem('nir_whatsapp_number') || '917760782551');
+    setWhatsappNumber2(localStorage.getItem('nir_whatsapp_number_2') || '919845012345');
     
     // Load orders
     const loadedOrders = JSON.parse(localStorage.getItem('nir_orders') || '[]');
@@ -68,6 +70,7 @@ const Admin = () => {
     e.preventDefault();
     localStorage.setItem('nir_formspree_id', formspreeId);
     localStorage.setItem('nir_whatsapp_number', whatsappNumber);
+    localStorage.setItem('nir_whatsapp_number_2', whatsappNumber2);
     alert("Notification and Sourcing settings updated successfully!");
   };
 
@@ -273,12 +276,12 @@ const Admin = () => {
                   <Mail className="w-4 h-4 text-coffee-500" />
                   <span>Configure Dispatch & Order Notifications</span>
                 </h3>
-                <form onSubmit={handleSaveSettings} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                <form onSubmit={handleSaveSettings} className="grid grid-cols-1 md:grid-cols-7 gap-4 items-end">
                   
                   {/* Formspree */}
                   <div className="md:col-span-2 flex flex-col gap-1.5">
                     <label className="text-[10px] font-mono uppercase tracking-wider text-coffee-800 font-bold">
-                      Formspree ID (Optional Email Alerts)
+                      Formspree ID (Email Alerts)
                     </label>
                     <input
                       type="text"
@@ -289,16 +292,30 @@ const Admin = () => {
                     />
                   </div>
 
-                  {/* WhatsApp */}
+                  {/* WhatsApp 1 */}
                   <div className="md:col-span-2 flex flex-col gap-1.5">
                     <label className="text-[10px] font-mono uppercase tracking-wider text-coffee-800 font-bold">
-                      WhatsApp Number (For Direct Orders)
+                      WhatsApp Admin 1 (Noushad)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 917760782551"
+                      value={whatsappNumber}
+                      onChange={(e) => setWhatsappNumber(e.target.value)}
+                      className="bg-white text-xs px-3 py-2.5 rounded-xl border border-coffee-200 focus:outline-none focus:border-coffee-500 font-mono w-full"
+                    />
+                  </div>
+
+                  {/* WhatsApp 2 */}
+                  <div className="md:col-span-2 flex flex-col gap-1.5">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-coffee-800 font-bold">
+                      WhatsApp Admin 2 (Irsad)
                     </label>
                     <input
                       type="text"
                       placeholder="e.g. 919845012345"
-                      value={whatsappNumber}
-                      onChange={(e) => setWhatsappNumber(e.target.value)}
+                      value={whatsappNumber2}
+                      onChange={(e) => setWhatsappNumber2(e.target.value)}
                       className="bg-white text-xs px-3 py-2.5 rounded-xl border border-coffee-200 focus:outline-none focus:border-coffee-500 font-mono w-full"
                     />
                   </div>
@@ -307,15 +324,15 @@ const Admin = () => {
                   <div className="md:col-span-1">
                     <button
                       type="submit"
-                      className="bg-coffee-800 text-coffee-50 hover:bg-coffee-500 hover:text-coffee-900 text-[10px] font-mono font-bold tracking-wider px-4 py-3 rounded-xl transition-all w-full text-center"
+                      className="bg-coffee-800 text-coffee-50 hover:bg-coffee-500 hover:text-coffee-900 text-[10px] font-mono font-bold tracking-wider px-2 py-3 rounded-xl transition-all w-full text-center"
                     >
-                      SAVE SETTINGS
+                      SAVE
                     </button>
                   </div>
 
                 </form>
                 <p className="text-[10px] text-coffee-600 font-light mt-3 leading-relaxed">
-                  * Entering a WhatsApp number (including country code, e.g. 91 for India) will automatically open a WhatsApp message with the roaster containing complete billing/address details once the customer clicks "Place Order"!
+                  * Entering WhatsApp numbers (with country code, e.g. 91 for India) will let customers choose which roaster (Noushad or Irsad) to text to submit their billing details on checkout.
                 </p>
               </div>
 

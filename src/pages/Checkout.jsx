@@ -11,6 +11,8 @@ const Checkout = () => {
   const [step, setStep] = useState(1); // 1: Shipping, 2: Payment, 3: Completed
   const [addressData, setAddressData] = useState({ name: '', email: '', phone: '', address: '', city: '', pincode: '' });
   const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [placedOrderId, setPlacedOrderId] = useState('');
+  const [whatsappMsg, setWhatsappMsg] = useState('');
 
   useEffect(() => {
     document.title = "Checkout | NIR Brothers Coffee";
@@ -87,8 +89,6 @@ const Checkout = () => {
     }
 
     // WhatsApp redirection
-    const whatsappNumber = localStorage.getItem('nir_whatsapp_number') || '917760782551';
-    const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
     const messageText = `*New Coffee Order from NIR Brothers!* ☕\n\n` +
       `*Order ID:* ${orderId}\n` +
       `*Customer:* ${addressData.name}\n` +
@@ -98,8 +98,8 @@ const Checkout = () => {
       `*Grand Total:* ₹${total}\n` +
       `*Payment Method:* ${paymentMethod === 'cod' ? 'Cash on Delivery' : paymentMethod === 'upi' ? 'UPI' : 'Card'}`;
 
-    window.open(`https://wa.me/${cleanNumber}?text=${encodeURIComponent(messageText)}`, '_blank');
-
+    setPlacedOrderId(orderId);
+    setWhatsappMsg(messageText);
     setStep(3);
     // clear cart after completing order
     setTimeout(() => {
@@ -359,9 +359,37 @@ const Checkout = () => {
             </div>
 
             <div className="bg-coffee-100/50 p-4 rounded-xl border border-coffee-200/20 w-full text-xs font-mono text-left flex flex-col gap-2">
-              <div className="flex justify-between"><span className="text-coffee-500">Order Ref</span><span className="font-semibold">NIR-#{Math.floor(100000 + Math.random() * 900000)}</span></div>
+              <div className="flex justify-between"><span className="text-coffee-500">Order Ref</span><span className="font-semibold">{placedOrderId}</span></div>
               <div className="flex justify-between"><span className="text-coffee-500">Deliver To</span><span className="font-semibold">{addressData.name || 'Brew Lover'}</span></div>
               <div className="flex justify-between"><span className="text-coffee-500">Estimated Delivery</span><span className="font-semibold">3-4 business days</span></div>
+            </div>
+
+            {/* WhatsApp dispatch option */}
+            <div className="bg-emerald-50/60 border border-emerald-200/50 p-4 rounded-2xl w-full text-center flex flex-col gap-2.5 my-1">
+              <span className="text-[9px] font-mono uppercase tracking-wider text-emerald-800 font-bold block">
+                Order dispatch on WhatsApp
+              </span>
+              <p className="text-[10px] text-coffee-700 leading-normal font-light">
+                Please click below to send your order details via WhatsApp to one of our roasters:
+              </p>
+              <div className="flex flex-col gap-2 mt-1">
+                <a
+                  href={`https://wa.me/${(localStorage.getItem('nir_whatsapp_number') || '917760782551').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMsg)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xxs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all"
+                >
+                  💬 Send to Admin 1 (Noushad)
+                </a>
+                <a
+                  href={`https://wa.me/${(localStorage.getItem('nir_whatsapp_number_2') || '919845012345').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMsg)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xxs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all"
+                >
+                  💬 Send to Admin 2 (Irsad)
+                </a>
+              </div>
             </div>
 
             <button
