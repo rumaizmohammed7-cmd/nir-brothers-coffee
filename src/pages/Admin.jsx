@@ -17,6 +17,7 @@ const Admin = () => {
     blend: '100% Arabica',
     weight: '250g',
     intensity: 3,
+    image: '',
   });
   const [formspreeId, setFormspreeId] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
@@ -87,7 +88,7 @@ const Admin = () => {
         rating: 5.0,
         reviewsCount: 1,
         inStock: true,
-        image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=500&fit=crop', // default premium coffee image
+        image: newProduct.image.trim() || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=500&fit=crop', // default premium coffee image if empty
         tags: ['New Sourcing', 'Estate Direct'],
         specifications: {
           origin: 'Mudigere, Chikkamaglore, India',
@@ -111,6 +112,7 @@ const Admin = () => {
         blend: '100% Arabica',
         weight: '250g',
         intensity: 3,
+        image: '',
       });
 
       // Force refresh page content since database config references products
@@ -523,6 +525,17 @@ const Admin = () => {
                         className="bg-white px-3 py-2 rounded-lg border border-coffee-200 focus:outline-none"
                       />
                     </div>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <label className="font-mono text-[10px] font-bold text-coffee-700 uppercase">Image URL (Optional)</label>
+                    <input
+                      type="url"
+                      placeholder="e.g. https://i.postimg.cc/xyz/my-coffee.jpg"
+                      value={newProduct.image}
+                      onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+                      className="bg-white px-3 py-2 rounded-lg border border-coffee-200 focus:outline-none"
+                    />
                   </div>
 
                   <button
