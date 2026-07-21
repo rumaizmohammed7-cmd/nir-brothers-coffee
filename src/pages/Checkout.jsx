@@ -29,8 +29,9 @@ const Checkout = () => {
   const handlePlaceOrder = () => {
     // Save order data to localStorage for Admin view
     const existing = JSON.parse(localStorage.getItem('nir_orders') || '[]');
+    const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
     const newOrder = {
-      id: 'ORD-' + Math.floor(100000 + Math.random() * 900000),
+      id: orderId,
       date: new Date().toLocaleString(),
       customer: addressData,
       paymentMethod: paymentMethod,
@@ -52,6 +53,32 @@ const Checkout = () => {
       status: 'Processing'
     };
     localStorage.setItem('nir_orders', JSON.stringify([newOrder, ...existing]));
+
+    // Check if Formspree ID is set for real email notifications
+    const formspreeId = localStorage.getItem('nir_formspree_id');
+    if (formspreeId) {
+      const emailBody = {
+        orderId: orderId,
+        date: newOrder.date,
+        customerName: addressData.name,
+        customerEmail: addressData.email,
+        customerPhone: addressData.phone,
+        customerAddress: `${addressData.address}, ${addressData.city} - ${addressData.pincode}`,
+        paymentMethod: paymentMethod === 'cod' ? 'Cash on Delivery' : paymentMethod === 'upi' ? 'UPI' : 'Card',
+        itemsOrdered: cart.map(item => `${item.product.name} (${item.weight}, ${item.grind}) x${item.quantity}`).join('\n'),
+        totalAmount: `₹${total}`,
+        _subject: `New Coffee Order ${orderId} - ₹${total}`
+      };
+
+      fetch(`https://formspree.io/f/${formspreeId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(emailBody)
+      }).catch(err => console.log('Error dispatching Formspree notification:', err));
+    }
 
     setStep(3);
     // clear cart after completing order

@@ -18,9 +18,13 @@ const Admin = () => {
     weight: '250g',
     intensity: 3,
   });
+  const [formspreeId, setFormspreeId] = useState('');
 
   useEffect(() => {
     document.title = "Admin Dashboard | NIR Brothers Coffee";
+    
+    // Load Formspree ID
+    setFormspreeId(localStorage.getItem('nir_formspree_id') || '');
     
     // Load orders
     const loadedOrders = JSON.parse(localStorage.getItem('nir_orders') || '[]');
@@ -53,6 +57,12 @@ const Admin = () => {
     });
     localStorage.setItem('nir_orders', JSON.stringify(updated));
     setOrders(updated);
+  };
+
+  const handleSaveFormspree = (e) => {
+    e.preventDefault();
+    localStorage.setItem('nir_formspree_id', formspreeId);
+    alert("Formspree Form ID saved successfully! You will now receive email alerts for new orders.");
   };
 
   const handleDeleteMessage = (msgId) => {
@@ -208,6 +218,34 @@ const Admin = () => {
                 <ShoppingBag className="w-5 h-5 text-coffee-500" />
                 <span>Order Management Queue</span>
               </h2>
+
+              {/* Email Notification Setup */}
+              <div className="glass-card bg-coffee-100/40 border border-coffee-200/40 p-4 rounded-2xl mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                  <h3 className="font-heading text-sm font-bold text-coffee-900 mb-1 flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-coffee-500" />
+                    <span>Setup Real Email Alerts on Your Phone</span>
+                  </h3>
+                  <p className="text-[11px] text-coffee-600 font-light max-w-xl leading-relaxed">
+                    Receive instant email notifications for new orders by creating a free account at <a href="https://formspree.io" target="_blank" rel="noreferrer" className="text-coffee-800 font-bold underline hover:text-coffee-500">formspree.io</a>, creating a form, and pasting the Form ID below.
+                  </p>
+                </div>
+                <form onSubmit={handleSaveFormspree} className="flex gap-2 w-full md:w-auto">
+                  <input
+                    type="text"
+                    placeholder="Formspree ID (e.g. mvoyzpqw)"
+                    value={formspreeId}
+                    onChange={(e) => setFormspreeId(e.target.value)}
+                    className="bg-white text-xs px-3 py-2 rounded-xl border border-coffee-200 focus:outline-none focus:border-coffee-500 w-full md:w-56 font-mono"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-coffee-800 text-coffee-50 hover:bg-coffee-500 hover:text-coffee-900 text-[10px] font-mono font-bold tracking-wider px-4 py-2 rounded-xl transition-all whitespace-nowrap"
+                  >
+                     SAVE
+                  </button>
+                </form>
+              </div>
 
               {orders.length === 0 ? (
                 <div className="text-center py-16">
