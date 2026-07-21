@@ -382,7 +382,7 @@ const Checkout = () => {
                   💬 Send to Admin 1 (Noushad)
                 </a>
                 <a
-                  href={`https://wa.me/${(localStorage.getItem('nir_whatsapp_number_2') || '919845012345').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMsg)}`}
+                  href={`https://wa.me/${(localStorage.getItem('nir_whatsapp_number_2') || '917899487901').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMsg)}`}
                   target="_blank"
                   rel="noreferrer"
                   className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xxs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all"

@@ -31,7 +31,7 @@ const Admin = () => {
     setFormspreeId(localStorage.getItem('nir_formspree_id') || '');
     // Load WhatsApp Number
     setWhatsappNumber(localStorage.getItem('nir_whatsapp_number') || '917760782551');
-    setWhatsappNumber2(localStorage.getItem('nir_whatsapp_number_2') || '919845012345');
+    setWhatsappNumber2(localStorage.getItem('nir_whatsapp_number_2') || '917899487901');
     
     // Load orders
     const loadedOrders = JSON.parse(localStorage.getItem('nir_orders') || '[]');
@@ -313,7 +313,7 @@ const Admin = () => {
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. 919845012345"
+                      placeholder="e.g. 917899487901"
                       value={whatsappNumber2}
                       onChange={(e) => setWhatsappNumber2(e.target.value)}
                       className="bg-white text-xs px-3 py-2.5 rounded-xl border border-coffee-200 focus:outline-none focus:border-coffee-500 font-mono w-full"
