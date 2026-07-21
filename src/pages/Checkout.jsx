@@ -86,6 +86,20 @@ const Checkout = () => {
       }).catch(err => console.log('Error dispatching Formspree notification:', err));
     }
 
+    // WhatsApp redirection
+    const whatsappNumber = localStorage.getItem('nir_whatsapp_number') || '919845012345';
+    const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
+    const messageText = `*New Coffee Order from NIR Brothers!* ☕\n\n` +
+      `*Order ID:* ${orderId}\n` +
+      `*Customer:* ${addressData.name}\n` +
+      `*Phone:* ${addressData.phone}\n` +
+      `*Address:* ${addressData.address}, ${addressData.city} - ${addressData.pincode}\n\n` +
+      `*Items Ordered:*\n${cart.map(item => `- ${item.product.name} (${item.weight}, ${item.grind}) x${item.quantity}`).join('\n')}\n\n` +
+      `*Grand Total:* ₹${total}\n` +
+      `*Payment Method:* ${paymentMethod === 'cod' ? 'Cash on Delivery' : paymentMethod === 'upi' ? 'UPI' : 'Card'}`;
+
+    window.open(`https://wa.me/${cleanNumber}?text=${encodeURIComponent(messageText)}`, '_blank');
+
     setStep(3);
     // clear cart after completing order
     setTimeout(() => {

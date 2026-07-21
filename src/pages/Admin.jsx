@@ -19,12 +19,15 @@ const Admin = () => {
     intensity: 3,
   });
   const [formspreeId, setFormspreeId] = useState('');
+  const [whatsappNumber, setWhatsappNumber] = useState('');
 
   useEffect(() => {
     document.title = "Admin Dashboard | NIR Brothers Coffee";
     
     // Load Formspree ID
     setFormspreeId(localStorage.getItem('nir_formspree_id') || '');
+    // Load WhatsApp Number
+    setWhatsappNumber(localStorage.getItem('nir_whatsapp_number') || '919845012345');
     
     // Load orders
     const loadedOrders = JSON.parse(localStorage.getItem('nir_orders') || '[]');
@@ -59,10 +62,11 @@ const Admin = () => {
     setOrders(updated);
   };
 
-  const handleSaveFormspree = (e) => {
+  const handleSaveSettings = (e) => {
     e.preventDefault();
     localStorage.setItem('nir_formspree_id', formspreeId);
-    alert("Formspree Form ID saved successfully! You will now receive email alerts for new orders.");
+    localStorage.setItem('nir_whatsapp_number', whatsappNumber);
+    alert("Notification and Sourcing settings updated successfully!");
   };
 
   const handleDeleteMessage = (msgId) => {
@@ -219,32 +223,56 @@ const Admin = () => {
                 <span>Order Management Queue</span>
               </h2>
 
-              {/* Email Notification Setup */}
-              <div className="glass-card bg-coffee-100/40 border border-coffee-200/40 p-4 rounded-2xl mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                  <h3 className="font-heading text-sm font-bold text-coffee-900 mb-1 flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-coffee-500" />
-                    <span>Setup Real Email Alerts on Your Phone</span>
-                  </h3>
-                  <p className="text-[11px] text-coffee-600 font-light max-w-xl leading-relaxed">
-                    Receive instant email notifications for new orders by creating a free account at <a href="https://formspree.io" target="_blank" rel="noreferrer" className="text-coffee-800 font-bold underline hover:text-coffee-500">formspree.io</a>, creating a form, and pasting the Form ID below.
-                  </p>
-                </div>
-                <form onSubmit={handleSaveFormspree} className="flex gap-2 w-full md:w-auto">
-                  <input
-                    type="text"
-                    placeholder="Formspree ID (e.g. mvoyzpqw)"
-                    value={formspreeId}
-                    onChange={(e) => setFormspreeId(e.target.value)}
-                    className="bg-white text-xs px-3 py-2 rounded-xl border border-coffee-200 focus:outline-none focus:border-coffee-500 w-full md:w-56 font-mono"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-coffee-800 text-coffee-50 hover:bg-coffee-500 hover:text-coffee-900 text-[10px] font-mono font-bold tracking-wider px-4 py-2 rounded-xl transition-all whitespace-nowrap"
-                  >
-                     SAVE
-                  </button>
+              {/* Notification Settings Setup */}
+              <div className="glass-card bg-coffee-100/40 border border-coffee-200/40 p-5 rounded-2xl mb-8">
+                <h3 className="font-heading text-sm font-bold text-coffee-900 mb-4 flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-coffee-500" />
+                  <span>Configure Dispatch & Order Notifications</span>
+                </h3>
+                <form onSubmit={handleSaveSettings} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                  
+                  {/* Formspree */}
+                  <div className="md:col-span-2 flex flex-col gap-1.5">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-coffee-800 font-bold">
+                      Formspree ID (Optional Email Alerts)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. mvoyzpqw"
+                      value={formspreeId}
+                      onChange={(e) => setFormspreeId(e.target.value)}
+                      className="bg-white text-xs px-3 py-2.5 rounded-xl border border-coffee-200 focus:outline-none focus:border-coffee-500 font-mono w-full"
+                    />
+                  </div>
+
+                  {/* WhatsApp */}
+                  <div className="md:col-span-2 flex flex-col gap-1.5">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-coffee-800 font-bold">
+                      WhatsApp Number (For Direct Orders)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 919845012345"
+                      value={whatsappNumber}
+                      onChange={(e) => setWhatsappNumber(e.target.value)}
+                      className="bg-white text-xs px-3 py-2.5 rounded-xl border border-coffee-200 focus:outline-none focus:border-coffee-500 font-mono w-full"
+                    />
+                  </div>
+
+                  {/* Save Button */}
+                  <div className="md:col-span-1">
+                    <button
+                      type="submit"
+                      className="bg-coffee-800 text-coffee-50 hover:bg-coffee-500 hover:text-coffee-900 text-[10px] font-mono font-bold tracking-wider px-4 py-3 rounded-xl transition-all w-full text-center"
+                    >
+                      SAVE SETTINGS
+                    </button>
+                  </div>
+
                 </form>
+                <p className="text-[10px] text-coffee-600 font-light mt-3 leading-relaxed">
+                  * Entering a WhatsApp number (including country code, e.g. 91 for India) will automatically open a WhatsApp message with the roaster containing complete billing/address details once the customer clicks "Place Order"!
+                </p>
               </div>
 
               {orders.length === 0 ? (
