@@ -87,7 +87,7 @@ const Checkout = () => {
     }
 
     // WhatsApp redirection
-    const whatsappNumber = localStorage.getItem('nir_whatsapp_number') || '919845012345';
+    const whatsappNumber = localStorage.getItem('nir_whatsapp_number') || '917760782551';
     const cleanNumber = whatsappNumber.replace(/[^0-9]/g, '');
     const messageText = `*New Coffee Order from NIR Brothers!* ☕\n\n` +
       `*Order ID:* ${orderId}\n` +

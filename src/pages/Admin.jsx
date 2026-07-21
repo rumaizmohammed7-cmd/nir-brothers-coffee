@@ -27,7 +27,7 @@ const Admin = () => {
     // Load Formspree ID
     setFormspreeId(localStorage.getItem('nir_formspree_id') || '');
     // Load WhatsApp Number
-    setWhatsappNumber(localStorage.getItem('nir_whatsapp_number') || '919845012345');
+    setWhatsappNumber(localStorage.getItem('nir_whatsapp_number') || '917760782551');
     
     // Load orders
     const loadedOrders = JSON.parse(localStorage.getItem('nir_orders') || '[]');
