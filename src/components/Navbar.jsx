@@ -33,6 +33,7 @@ const Navbar = ({ onCartOpen, onSearchOpen }) => {
     { name: 'Home', path: '/' },
     { name: 'Shop', path: '/shop' },
     { name: 'Our Story', path: '/story' },
+    { name: 'Track Order', path: '/track' },
     { name: 'About', path: '/about' },
     { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' },

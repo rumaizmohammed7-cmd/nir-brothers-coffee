@@ -56,6 +56,7 @@ const Footer = () => {
           <h3 className="font-heading text-lg font-semibold tracking-wider text-coffee-500 mb-6">Quick Links</h3>
           <ul className="flex flex-col gap-3 text-sm text-coffee-200 font-light">
             <li><Link to="/shop" className="hover:text-coffee-500 transition-colors duration-300">Browse Shop</Link></li>
+            <li><Link to="/track" className="hover:text-coffee-500 transition-colors duration-300">Track Order</Link></li>
             <li><Link to="/story" className="hover:text-coffee-500 transition-colors duration-300">Our Story</Link></li>
             <li><Link to="/about" className="hover:text-coffee-500 transition-colors duration-300">About Sourcing</Link></li>
             <li><Link to="/blog" className="hover:text-coffee-500 transition-colors duration-300">Coffee Blog</Link></li>

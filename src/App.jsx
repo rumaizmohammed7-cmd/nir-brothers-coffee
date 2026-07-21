@@ -31,6 +31,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 import NotFound from './pages/NotFound';
 import Admin from './pages/Admin';
+import TrackOrder from './pages/TrackOrder';
 
 import './App.css';
 
@@ -112,6 +113,7 @@ function App() {
                   <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/admin" element={<Admin />} />
+                  <Route path="/track" element={<TrackOrder />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
