@@ -17,10 +17,11 @@ const Admin = () => {
     blend: '100% Arabica',
     weight: '250g',
     intensity: 3,
-    image: '',
   });
   const [formspreeId, setFormspreeId] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [imageString, setImageString] = useState('');
+  const [imagePreview, setImagePreview] = useState('');
 
   useEffect(() => {
     document.title = "Admin Dashboard | NIR Brothers Coffee";
@@ -70,6 +71,46 @@ const Admin = () => {
     alert("Notification and Sourcing settings updated successfully!");
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const max_size = 400; // max width/height in px
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > max_size) {
+              height *= max_size / width;
+              width = max_size;
+            }
+          } else {
+            if (height > max_size) {
+              width *= max_size / height;
+              height = max_size;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Compress to low size JPEG to fit in localStorage easily
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+          setImageString(dataUrl);
+          setImagePreview(dataUrl);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleDeleteMessage = (msgId) => {
     const filtered = messages.filter(m => m.id !== msgId);
     localStorage.setItem('nir_messages', JSON.stringify(filtered));
@@ -88,7 +129,7 @@ const Admin = () => {
         rating: 5.0,
         reviewsCount: 1,
         inStock: true,
-        image: newProduct.image.trim() || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=500&fit=crop', // default premium coffee image if empty
+        image: imageString || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=500&fit=crop', // default premium coffee image if empty
         tags: ['New Sourcing', 'Estate Direct'],
         specifications: {
           origin: 'Mudigere, Chikkamaglore, India',
@@ -112,8 +153,9 @@ const Admin = () => {
         blend: '100% Arabica',
         weight: '250g',
         intensity: 3,
-        image: '',
       });
+      setImageString('');
+      setImagePreview('');
 
       // Force refresh page content since database config references products
       window.location.reload();
@@ -528,14 +570,19 @@ const Admin = () => {
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="font-mono text-[10px] font-bold text-coffee-700 uppercase">Image URL (Optional)</label>
+                    <label className="font-mono text-[10px] font-bold text-coffee-700 uppercase">Product Image (Upload from Device)</label>
                     <input
-                      type="url"
-                      placeholder="e.g. https://i.postimg.cc/xyz/my-coffee.jpg"
-                      value={newProduct.image}
-                      onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
-                      className="bg-white px-3 py-2 rounded-lg border border-coffee-200 focus:outline-none"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="bg-white px-3 py-2 rounded-lg border border-coffee-200 focus:outline-none text-[10px]"
                     />
+                    {imagePreview && (
+                      <div className="flex items-center gap-3 mt-1.5 bg-coffee-100/30 p-2 rounded-xl border border-coffee-200/20">
+                        <img src={imagePreview} alt="Preview" className="w-12 h-12 object-cover rounded-lg border border-coffee-200" />
+                        <span className="text-[10px] text-coffee-500 font-mono">Compressed successfully!</span>
+                      </div>
+                    )}
                   </div>
 
                   <button
