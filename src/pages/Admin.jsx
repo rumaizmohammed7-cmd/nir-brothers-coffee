@@ -19,7 +19,7 @@ const Admin = () => {
     intensity: 3,
   });
   const [formspreeId, setFormspreeId] = useState('');
-  const [whatsappGroupLink, setWhatsappGroupLink] = useState('');
+  const [whatsappNumber, setWhatsappNumber] = useState('');
   const [imageString, setImageString] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -33,8 +33,8 @@ const Admin = () => {
     
     // Load Formspree ID
     setFormspreeId(localStorage.getItem('nir_formspree_id') || '');
-    // Load WhatsApp Group Link
-    setWhatsappGroupLink(localStorage.getItem('nir_whatsapp_group_link') || 'https://chat.whatsapp.com/E5T3WkyxYWJLeEBIkKoXgL');
+    // Load WhatsApp Number
+    setWhatsappNumber(localStorage.getItem('nir_whatsapp_number') || '917760782551');
     
     // Load orders
     const loadedOrders = JSON.parse(localStorage.getItem('nir_orders') || '[]');
@@ -72,7 +72,7 @@ const Admin = () => {
   const handleSaveSettings = (e) => {
     e.preventDefault();
     localStorage.setItem('nir_formspree_id', formspreeId);
-    localStorage.setItem('nir_whatsapp_group_link', whatsappGroupLink);
+    localStorage.setItem('nir_whatsapp_number', whatsappNumber);
     alert("Notification and Sourcing settings updated successfully!");
   };
 
@@ -360,16 +360,16 @@ const Admin = () => {
                     />
                   </div>
 
-                  {/* WhatsApp Group Link */}
+                  {/* WhatsApp Number */}
                   <div className="md:col-span-2 flex flex-col gap-1.5">
                     <label className="text-[10px] font-mono uppercase tracking-wider text-coffee-800 font-bold">
-                      WhatsApp Group Link
+                      WhatsApp Admin Number
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. https://chat.whatsapp.com/..."
-                      value={whatsappGroupLink}
-                      onChange={(e) => setWhatsappGroupLink(e.target.value)}
+                      placeholder="e.g. 917760782551"
+                      value={whatsappNumber}
+                      onChange={(e) => setWhatsappNumber(e.target.value)}
                       className="bg-white text-xs px-3 py-2.5 rounded-xl border border-coffee-200 focus:outline-none focus:border-coffee-500 font-mono w-full"
                     />
                   </div>
@@ -386,7 +386,7 @@ const Admin = () => {
 
                 </form>
                 <p className="text-[10px] text-coffee-600 font-light mt-3 leading-relaxed">
-                  * Entering a WhatsApp Group Invite Link allows customers to copy order summaries and paste them directly into your roasters order dispatch group on checkout!
+                  * Entering a WhatsApp number (with country code, e.g. 91 for India) will let customers submit their billing and order details directly to your WhatsApp in one click on checkout!
                 </p>
               </div>
 

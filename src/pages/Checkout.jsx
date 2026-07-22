@@ -370,17 +370,16 @@ const Checkout = () => {
                 Order dispatch on WhatsApp
               </span>
               <p className="text-[10px] text-coffee-700 leading-normal font-light">
-                Click below to copy your order details and submit them directly to our roasters group!
+                Click below to submit your order summary directly to our roaster via WhatsApp!
               </p>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(whatsappMsg).catch(() => {});
-                  window.open(localStorage.getItem('nir_whatsapp_group_link') || "https://chat.whatsapp.com/E5T3WkyxYWJLeEBIkKoXgL", "_blank");
-                }}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xxs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all w-full cursor-pointer"
+              <a
+                href={`https://wa.me/${(localStorage.getItem('nir_whatsapp_number') || '917760782551').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMsg)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xxs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all w-full cursor-pointer text-center"
               >
-                💬 Submit Order to WhatsApp Group
-              </button>
+                💬 Send Order via WhatsApp
+              </a>
             </div>
 
             <button
