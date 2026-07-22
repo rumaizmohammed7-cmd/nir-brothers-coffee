@@ -374,14 +374,8 @@ const Checkout = () => {
               </p>
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText(whatsappMsg)
-                    .then(() => {
-                      alert("Order details copied to clipboard! Now, paste the message in our WhatsApp group chat.");
-                      window.open(localStorage.getItem('nir_whatsapp_group_link') || "https://chat.whatsapp.com/E5T3WkyxYWJLeEBIkKoXgL", "_blank");
-                    })
-                    .catch(() => {
-                      window.open(localStorage.getItem('nir_whatsapp_group_link') || "https://chat.whatsapp.com/E5T3WkyxYWJLeEBIkKoXgL", "_blank");
-                    });
+                  navigator.clipboard.writeText(whatsappMsg).catch(() => {});
+                  window.open(localStorage.getItem('nir_whatsapp_group_link') || "https://chat.whatsapp.com/E5T3WkyxYWJLeEBIkKoXgL", "_blank");
                 }}
                 className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xxs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all w-full cursor-pointer"
               >
