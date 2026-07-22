@@ -370,26 +370,23 @@ const Checkout = () => {
                 Order dispatch on WhatsApp
               </span>
               <p className="text-[10px] text-coffee-700 leading-normal font-light">
-                Please click below to send your order details via WhatsApp to one of our roasters:
+                Click below to copy your order details and submit them directly to our roasters group!
               </p>
-              <div className="flex flex-col gap-2 mt-1">
-                <a
-                  href={`https://wa.me/${(localStorage.getItem('nir_whatsapp_number') || '917760782551').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMsg)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xxs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all"
-                >
-                  💬 Send to Admin 1 (Noushad)
-                </a>
-                <a
-                  href={`https://wa.me/${(localStorage.getItem('nir_whatsapp_number_2') || '917899487901').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMsg)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xxs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all"
-                >
-                  💬 Send to Admin 2 (Irsad)
-                </a>
-              </div>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(whatsappMsg)
+                    .then(() => {
+                      alert("Order details copied to clipboard! Now, paste the message in our WhatsApp group chat.");
+                      window.open(localStorage.getItem('nir_whatsapp_group_link') || "https://chat.whatsapp.com/E5T3WkyxYWJLeEBIkKoXgL", "_blank");
+                    })
+                    .catch(() => {
+                      window.open(localStorage.getItem('nir_whatsapp_group_link') || "https://chat.whatsapp.com/E5T3WkyxYWJLeEBIkKoXgL", "_blank");
+                    });
+                }}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xxs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all w-full cursor-pointer"
+              >
+                💬 Submit Order to WhatsApp Group
+              </button>
             </div>
 
             <button
